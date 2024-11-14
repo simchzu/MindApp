@@ -1,0 +1,231 @@
+//package.json
+{
+  "dependencies": {
+    "@expo/vector-icons": "^14.0.3",
+    "react-native-paper": "4.9.2",
+    "react-native-webview": "13.8.6",
+    "@react-navigation/drawer": "6.7.2",
+    "@react-navigation/native": "6.0.0",
+    "react-native-vector-icons": "10.2.0",
+    "@react-navigation/bottom-tabs": "6.6.1",
+    "@react-navigation/native-stack": "6.11.0",
+    "react-native-vector-icons/FontAwesome": "*"
+  }
+}
+
+import React from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const stories = [
+  { id: '1', user: '김OO 상담사', image: require('/assets/김.png') },
+  { id: '2', user: '문△△ 상담사', image: require('/assets/문.png')},
+  { id: '3', user: '차☆☆ 상담사', image: require('/assets/박.png') },
+  { id: '4', user: '박□□ 상담사', image: require('/assets/차.png') },
+];
+
+const featuredStories = [
+  {
+    id: '1',
+    category: '취업/진로',
+    title: '점점 외모에 자신감이 사라져요.',
+    description: '외모에 대한 고민과 스트레스로 인해 자신감을 잃고 있어요...',
+  },
+  {
+    id: '2',
+    category: '대인관계',
+    title: '사람들과의 관계가 점점 어려워져요.',
+    description: '대인관계에서 오는 스트레스가 커지고 있습니다...',
+  },
+  {
+    id: '3',
+    category: '학업',
+    title: '공부에 집중이 안돼요.',
+    description: '계속되는 학업 스트레스로 인해 집중력이 떨어지고 있어요...',
+  },
+  {
+    id: '4',
+    category: '취업/진로',
+    title: '하루하루가 너무 무기력하고 아무것도 하기 싫어요...',
+    description: '말그대로 너무 하루가 무기력하고 귀찮고 아무것도 하기 싫어요...',
+  },
+  {
+    id: '5',
+    category: '일반고민',
+    title: '항상 불안과 긴장해서 빨리 지칠 때.',
+    description: '걱정을 사서하는 타입이라 해야할 스케줄이 있으면 의식적으로...',
+  },
+];
+
+const Story = ({ user, image }) => (
+  <View style={styles.story}>
+    <Image source={image} style={styles.storyImage} />
+    <Text style={styles.storyUser}>{user}</Text>
+  </View>
+);
+
+const FeaturedStory = ({ category, title, description }) => (
+  <View style={styles.featuredItem}>
+    <Text style={styles.featuredCategory}>{category}</Text>
+    <Text style={styles.featuredTitle}>{title}</Text>
+    <Text style={styles.featuredDescription}>{description}</Text>
+  </View>
+);
+
+const App = () => {
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>심리케어</Text>
+        <Text style={styles.subHeader}>감정분석 · 컨설팅 · 맞춤형 심리상담</Text>
+      </View>
+
+      <ScrollView style={styles.container}>
+        <View style={styles.storiesContainer}>
+          <Text style={styles.sectionTitle}>상담사 소개</Text>
+          <FlatList
+            data={stories}
+            horizontal
+            renderItem={({ item }) => <Story user={item.user} image={item.image} />}
+            keyExtractor={item => item.id}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+
+        <View style={styles.featuredContainer}>
+          <Text style={styles.sectionTitle}>민주's PICK 오늘의 사연</Text>
+          <FlatList
+            data={featuredStories}
+            renderItem={({ item }) => (
+              <FeaturedStory
+                category={item.category}
+                title={item.title}
+                description={item.description}
+              />
+            )}
+            keyExtractor={item => item.id}
+          />
+        </View>
+      </ScrollView>
+
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.footerButton}>
+          <Icon name="home" size={24} color="#666" />
+          <Text style={styles.footerText}>홈</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Icon name="user" size={24} color="#666" />
+          <Text style={styles.footerText}>상담사</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Icon name="comments" size={24} color="#666" />
+          <Text style={styles.footerText}>상담</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Icon name="bell" size={24} color="#666" />
+          <Text style={styles.footerText}>알림</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Icon name="cog" size={24} color="#666" />
+          <Text style={styles.footerText}>설정</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
+  header: {
+    backgroundColor: '#e6f4f1',
+    padding: 20,
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  subHeader: {
+    fontSize: 14,
+    color: '#666',
+  },
+  container: {
+    flex: 1,
+  },
+  storiesContainer: {
+    paddingVertical: 10,
+    backgroundColor: '#fff',
+    marginVertical: 5,
+    paddingHorizontal: 10,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#333',
+  },
+  story: {
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  storyImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#ddd',
+  },
+  storyUser: {
+    marginTop: 5,
+    fontSize: 12,
+    color: '#333',
+  },
+  featuredContainer: {
+    backgroundColor: '#fff',
+    padding: 15,
+    marginVertical: 5,
+  },
+  featuredItem: {
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  featuredCategory: {
+    fontSize: 12,
+    color: '#999',
+  },
+  featuredTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+    marginTop: 5,
+  },
+  featuredDescription: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 5,
+  },
+  footer: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+  },
+  footerButton: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 5,
+  },
+});
+
+export default App;
